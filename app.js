@@ -16,3 +16,15 @@ const app = Vue.createApp({
 });
 
 app.mount('#app');
+
+// ...
+
+let message = 'Hello';
+
+let longMessage = message + 'World';
+
+console.log(longMessage);
+
+message = 'Hello!!';
+
+console.log(longMessage);
