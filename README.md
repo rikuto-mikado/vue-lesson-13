@@ -193,3 +193,9 @@ set(target, key, value, receiver) {
 ```
 
 **Practical rule:** Always include all parameters you need, in order. Omit only from the end.
+
+---
+
+## 補足
+
+**Proxyは「割り込み」の仕組み。** 通常のオブジェクト操作を横取りして、自分の処理を優先的に実行できる。Vueはこれを使ってデータ変更を検知し、自動でDOMを更新している。
