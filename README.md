@@ -81,7 +81,45 @@ target[key] = value;   // Correct - key is a variable
 target.key = value;    // Wrong - looks for property literally named "key"
 ```
 
-### 4. Common Handler Traps
+### 4. How Does `set(target, key, value)` Connect to `new Proxy(data, handler)`?
+
+**Confusion**: "Are these parameters directly mapped to Proxy arguments?"
+
+**Answer**: Only `target` is directly connected. `key` and `value` are determined at operation time.
+
+```javascript
+const proxy = new Proxy(data, handler);
+//                       ↑      ↑
+//                    target  handler (contains set)
+
+proxy.message = 'Hello!!!!';
+//     ↑           ↑
+//    key        value
+```
+
+| Proxy() Argument | set() Parameter | Relationship |
+|-----------------|-----------------|--------------|
+| `data` | `target` | **Same object** - Proxy passes it automatically |
+| `handler` | - | The object containing set itself |
+| - | `key` | **Determined at operation time** - property name |
+| - | `value` | **Determined at operation time** - assigned value |
+
+**Flow:**
+```javascript
+// 1. Create Proxy
+const proxy = new Proxy(data, handler);
+
+// 2. Set a property
+proxy.message = 'Hello!!!!';
+
+// 3. JavaScript automatically calls handler.set()
+handler.set(data, 'message', 'Hello!!!!');
+//          ↑        ↑           ↑
+//       target     key        value
+//   (from Proxy) (from op)  (from op)
+```
+
+### 5. Common Handler Traps
 
 | Trap | Triggered When |
 |------|----------------|
