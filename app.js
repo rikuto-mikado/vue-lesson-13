@@ -19,12 +19,22 @@ app.mount('#app');
 
 // ...
 
-let message = 'Hello';
+const data = {
+  message: 'Hello',
+  longMessage: 'Hello World!'
+};
 
-let longMessage = message + 'World';
+const handler = {
+  set(target, key, value) {
+    if (key === 'message') {
+      target.longMessage = value + ' World!';
+    }
+    target.message = value;
+  }
+}
 
-console.log(longMessage);
+const proxy = new Proxy(data, handler);
 
-message = 'Hello!!';
+proxy.message = 'Hello!!!!'
 
-console.log(longMessage);
+console.log(proxy.longMessage);
